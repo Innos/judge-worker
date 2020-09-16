@@ -12,6 +12,7 @@
 
     using OJS.Workers.Common;
     using OJS.Workers.SubmissionProcessors;
+    using OJS.Workers.SubmissionProcessors.SubmissionProcessors;
 
     public class LocalWorkerServiceBase<TSubmission> : ServiceBase
     {
@@ -84,21 +85,23 @@
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
-                var submissionProcessor = new SubmissionProcessor<TSubmission>(
-                    name: $"SP #{i}",
+                var submissionProcessor = new LocalSubmissionProcessor<TSubmission>(
+                    name: $"LSP #{i}",
                     dependencyContainer: this.DependencyContainer,
                     submissionsForProcessing: submissionsForProcessing,
                     portNumber: Settings.GanacheCliDefaultPortNumber + i,
                     sharedLockObject: sharedLockObject);
-
-                var thread = new Thread(submissionProcessor.Start)
-                {
-                    Name = $"{nameof(Thread)} #{i}"
-                };
-
-                this.submissionProcessors.Add(submissionProcessor);
-                this.threads.Add(thread);
             }
+
+            var remoteSubmissionProcessor = new RemoteSubmissionProcessor<TSubmission>(
+                "LSP #1",
+                this.DependencyContainer,
+                submissionsForProcessing,
+                Settings.RemoteWorkerEndpoints,
+                sharedLockObject);
+
+            this.submissionProcessors.Add(remoteSubmissionProcessor);
+            this.threads.Add(new Thread(remoteSubmissionProcessor.Start));
         }
 
         private void StartThreads()

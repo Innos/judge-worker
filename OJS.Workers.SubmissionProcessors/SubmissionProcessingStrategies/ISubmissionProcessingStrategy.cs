@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.SubmissionProcessors
+﻿namespace OJS.Workers.SubmissionProcessors.SubmissionProcessingStrategies
 {
     using System.Collections.Concurrent;
 
@@ -17,9 +17,9 @@
 
         IOjsSubmission RetrieveSubmission();
 
-        void BeforeExecute();
+        void BeforeExecute(TSubmission submissionId);
 
-        void ProcessExecutionResult<TResult>(IExecutionResult<TResult> executionResult)
+        void ProcessExecutionResult<TResult>(IExecutionResult<TResult> executionResult, TSubmission submissionId)
             where TResult : ISingleCodeRunResult, new();
 
         void OnError(IOjsSubmission submission);

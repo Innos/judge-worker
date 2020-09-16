@@ -1,6 +1,7 @@
 ﻿namespace OJS.Workers.Common.Extensions
 {
     using System;
+    using System.Linq;
     using System.Text.RegularExpressions;
 
     public static class StringExtensions
@@ -73,5 +74,12 @@
 
         public static string RemoveMultipleSpaces(this string input) =>
             Regex.Replace(input, @"\s+", " ");
+
+        public static string ToHyphenSeparatedWords(this string str)
+            => string.Concat(
+                    str.Select((x, i) => i > 0 && char.IsUpper(x)
+                        ? "-" + x
+                        : x.ToString()))
+                .ToLower();
     }
 }

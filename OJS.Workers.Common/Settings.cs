@@ -1,5 +1,8 @@
 ﻿namespace OJS.Workers.Common
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using OJS.Workers.Common.Helpers;
 
     public static class Settings
@@ -14,6 +17,11 @@
         public static string CSharpCompilerPath => SettingsHelper.GetSetting("CSharpCompilerPath");
 
         public static string CSharpDotNetCoreCompilerPath => SettingsHelper.GetSetting("CSharpDotNetCoreCompilerPath");
+
+        public static IEnumerable<string> RemoteWorkerEndpoints => SettingsHelper.GetSetting("RemoteWorkerEndpoints")
+            .Split(';')
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Select(x => x.Trim());
 
         public static string DotNetCoreSharedAssembliesPath =>
             SettingsHelper.GetSetting("DotNetCoreSharedAssembliesPath");

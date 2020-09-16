@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.SubmissionProcessors
+﻿namespace OJS.Workers.SubmissionProcessors.SubmissionProcessingStrategies
 {
     using System;
     using System.Collections.Concurrent;
@@ -30,32 +30,34 @@
             this.SharedLockObject = sharedLockObject;
         }
 
-        public void ProcessExecutionResult<TResult>(IExecutionResult<TResult> executionResult)
+        public void ProcessExecutionResult<TResult>(IExecutionResult<TResult> executionResult, TSubmission submissionId)
             where TResult : ISingleCodeRunResult, new()
         {
             switch (executionResult)
             {
                 case IExecutionResult<TestResult> testsExecutionResult:
-                    this.ProcessTestsExecutionResult(testsExecutionResult);
+                    this.ProcessTestsExecutionResult(testsExecutionResult, submissionId);
                     break;
                 case IExecutionResult<OutputResult> outputExecutionResult:
-                    this.ProcessOutputExecutionResult(outputExecutionResult);
+                    this.ProcessOutputExecutionResult(outputExecutionResult, submissionId);
                     break;
                 default:
                     throw new ArgumentException("Invalid execution result", nameof(executionResult));
             }
         }
 
-        public abstract void BeforeExecute();
+        public abstract void BeforeExecute(TSubmission submissionId);
 
         public abstract IOjsSubmission RetrieveSubmission();
 
         public abstract void OnError(IOjsSubmission submission);
 
-        protected virtual void ProcessTestsExecutionResult(IExecutionResult<TestResult> testsExecutionResult) =>
+        protected virtual void ProcessTestsExecutionResult(
+            IExecutionResult<TestResult> testsExecutionResult,
+            TSubmission submissionId) =>
             throw new DerivedImplementationNotFoundException();
 
-        protected virtual void ProcessOutputExecutionResult(IExecutionResult<OutputResult> outputExecutionResult) =>
+        protected virtual void ProcessOutputExecutionResult(IExecutionResult<OutputResult> outputExecutionResult, TSubmission submissionId) =>
             throw new DerivedImplementationNotFoundException();
     }
 }

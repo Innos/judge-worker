@@ -11,6 +11,7 @@
   <!-- common NuGet package refs that affect all projects -->
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Qoollo.Turbo" Version="3.0.1" />
   </ItemGroup>
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
