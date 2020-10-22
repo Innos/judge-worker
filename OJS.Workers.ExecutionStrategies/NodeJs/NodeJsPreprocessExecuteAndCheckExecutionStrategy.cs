@@ -154,8 +154,8 @@ let adapterFunction = " + AdapterFunctionPlaceholder;
 process.stdin.resume();
 process.stdin.on('data', function(buf) { content += buf.toString(); });
 process.stdin.on('end', function() {
-    content = content.replace(new RegExp(EOL + '$'), '');
-    let inputData = content.split(EOL);
+    content = content.replace(new RegExp('\r?\n$'), '');
+    let inputData = content.split(new RegExp('\r?\n'));
     let result = adapterFunction(inputData, code.run);
     if (result !== undefined) {
         console.log(result);
