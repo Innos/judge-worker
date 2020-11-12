@@ -50,5 +50,8 @@
         SqlitePrepareDatabaseAndRunQueries = 45,
         SqliteRunQueriesAndCheckDatabase = 46,
         SqliteRunSkeletonRunQueriesAndCheckDatabase = 47,
+        SqlServerSingleDatabasePrepareDatabaseAndRunQueries = 48,
+        SqlServerSingleDatabaseRunQueriesAndCheckDatabase = 49,
+        SqlServerSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase = 50,
     }
 }

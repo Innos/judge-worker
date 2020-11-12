@@ -1,12 +1,13 @@
-﻿namespace OJS.Workers.ExecutionStrategies.Sql.SqlServerLocalDb
+﻿namespace OJS.Workers.ExecutionStrategies.Sql.SqlServerSingleDatabase
 {
     using System;
     using System.Data;
     using System.Data.SqlClient;
     using System.Globalization;
-    using System.Text.RegularExpressions;
+    using System.IO;
+    using System.Transactions;
 
-    public abstract class BaseSqlServerLocalDbExecutionStrategy : BaseSqlExecutionStrategy
+    public abstract class BaseSqlServerSingleDatabaseExecutionStrategy : BaseSqlExecutionStrategy
     {
         private const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
         private const string DateTimeOffsetFormat = "yyyy-MM-dd HH:mm:ss.fffffff zzz";
@@ -15,10 +16,14 @@
         private static readonly Type DateTimeOffsetType = typeof(DateTimeOffset);
 
         private readonly string masterDbConnectionString;
-        private readonly string restrictedUserId;
+        private string restrictedUserId;
         private readonly string restrictedUserPassword;
 
-        protected BaseSqlServerLocalDbExecutionStrategy(
+        private static string _databaseName = $"testing_{Guid.NewGuid()}";
+
+        private TransactionScope transactionScope;
+
+        protected BaseSqlServerSingleDatabaseExecutionStrategy(
             string masterDbConnectionString,
             string restrictedUserId,
             string restrictedUserPassword)
@@ -43,74 +48,62 @@
             this.restrictedUserPassword = restrictedUserPassword;
         }
 
-        public override IDbConnection GetOpenConnection(string databaseName)
+        private void EnsureDatabaseIsSetup()
         {
-            var databaseFilePath = $"{this.WorkingDirectory}\\{databaseName}.mdf";
+            var databaseName = this.GetDatabaseName();
+            var databaseFilePath =
+                string.Join(Path.DirectorySeparatorChar.ToString(), $"{this.WorkingDirectory}", $"{databaseName}.mdf");
 
             using (var connection = new SqlConnection(this.masterDbConnectionString))
             {
                 connection.Open();
 
-                var createDatabaseQuery =
-                    $"CREATE DATABASE [{databaseName}] ON PRIMARY (NAME=N'{databaseName}', FILENAME=N'{databaseFilePath}');";
-
-                var createLoginQuery = $@"
-                    IF NOT EXISTS (SELECT name FROM master.sys.server_principals WHERE name=N'{this.restrictedUserId}')
+                var setupDatabaseQuery =
+                    $@"IF DB_ID('{databaseName}') IS NULL
                     BEGIN
-                    CREATE LOGIN [{this.restrictedUserId}] WITH PASSWORD=N'{this.restrictedUserPassword}',
+                    CREATE DATABASE [{databaseName}] ON PRIMARY (NAME=N'{databaseName}', FILENAME=N'{databaseFilePath}');
+                    CREATE LOGIN [{this.RestrictedUserId}] WITH PASSWORD=N'{this.restrictedUserPassword}',
                     DEFAULT_DATABASE=[master],
                     DEFAULT_LANGUAGE=[us_english],
                     CHECK_EXPIRATION=OFF,
                     CHECK_POLICY=ON;
-                    END;";
+                    END";
 
-                var createUserAsDbOwnerQuery = $@"
+                var setupUserAsOwnerQuery = $@"
                     USE [{databaseName}];
-                    CREATE USER [{this.restrictedUserId}] FOR LOGIN [{this.restrictedUserId}];
-                    ALTER ROLE [db_owner] ADD MEMBER [{this.restrictedUserId}];";
+                    IF IS_ROLEMEMBER('db_owner', '{this.RestrictedUserId}') = 0 OR IS_ROLEMEMBER('db_owner', '{this.RestrictedUserId}') is NULL
+                    BEGIN
+                    CREATE USER [{this.RestrictedUserId}] FOR LOGIN [{this.RestrictedUserId}];
+                    ALTER ROLE [db_owner] ADD MEMBER [{this.RestrictedUserId}];
+                    END";
 
-                this.ExecuteNonQuery(connection, createDatabaseQuery);
-
-                this.ExecuteNonQuery(connection, createLoginQuery);
-
-                this.ExecuteNonQuery(connection, createUserAsDbOwnerQuery);
+                this.ExecuteNonQuery(connection, setupDatabaseQuery);
+                this.ExecuteNonQuery(connection, setupUserAsOwnerQuery);
             }
 
-            var userIdRegex = new Regex("User Id=.*?;");
-            var passwordRegex = new Regex("Password=.*?;");
+            this.WorkerDbConnectionString =
+                $"Data Source=sql_server;User Id={this.RestrictedUserId};Password={this.restrictedUserPassword};Database={databaseName};Pooling=False;";
+        }
 
-            var createdDbConnectionString = this.masterDbConnectionString;
+        public string WorkerDbConnectionString { get; set; }
 
-            createdDbConnectionString =
-                userIdRegex.Replace(this.masterDbConnectionString, $"User Id={this.restrictedUserId};");
+        public string RestrictedUserId => $"{this.GetDatabaseName()}_{this.restrictedUserId}";
 
-            createdDbConnectionString =
-                passwordRegex.Replace(createdDbConnectionString, this.restrictedUserPassword);
+        public override IDbConnection GetOpenConnection(string databaseName)
+        {
+            this.EnsureDatabaseIsSetup();
 
-            createdDbConnectionString += $";Database={databaseName};Pooling=False;";
-
-            var createdDbConnection = new SqlConnection(createdDbConnectionString);
+            this.transactionScope = new TransactionScope();
+            var createdDbConnection = new SqlConnection(this.WorkerDbConnectionString);
             createdDbConnection.Open();
 
             return createdDbConnection;
         }
 
         public override void DropDatabase(string databaseName)
-        {
-            using (var connection = new SqlConnection(this.masterDbConnectionString))
-            {
-                connection.Open();
+            => this.transactionScope.Dispose();
 
-                var dropDatabaseQuery = $@"
-                    IF EXISTS (SELECT name FROM master.sys.databases WHERE name=N'{databaseName}')
-                    BEGIN
-                    ALTER DATABASE [{databaseName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-                    DROP DATABASE [{databaseName}];
-                    END;";
-
-                this.ExecuteNonQuery(connection, dropDatabaseQuery);
-            }
-        }
+        public override string GetDatabaseName() => _databaseName;
 
         protected override string GetDataRecordFieldValue(IDataRecord dataRecord, int index)
         {
