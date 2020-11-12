@@ -14,7 +14,37 @@
     public class RemoteSubmissionsFilteringService
         : ISubmissionsFilteringService
     {
+<<<<<<< HEAD
         private readonly ISet<ExecutionStrategyType> remoteWorkerExecutionStrategyTypes = RemoteWorkerSupportedStrategies;
+=======
+        private readonly ISet<ExecutionStrategyType> remoteWorkerExecutionStrategyTypes = new HashSet<ExecutionStrategyType>
+        {
+            ExecutionStrategyType.DotNetCoreCompileExecuteAndCheck,
+            ExecutionStrategyType.PythonExecuteAndCheck,
+            ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck,
+            ExecutionStrategyType.CPlusPlusCompileExecuteAndCheckExecutionStrategy,
+            ExecutionStrategyType.PhpCliExecuteAndCheck,
+            ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck,
+            ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck,
+            ExecutionStrategyType.NodeJsPreprocessExecuteAndRunUnitTestsWithMocha,
+            ExecutionStrategyType.NodeJsPreprocessExecuteAndRunJsDomUnitTests,
+            ExecutionStrategyType.NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy,
+            ExecutionStrategyType.SqlServerLocalDbPrepareDatabaseAndRunQueries,
+            ExecutionStrategyType.SqlServerLocalDbRunQueriesAndCheckDatabase,
+            ExecutionStrategyType.SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabase,
+            ExecutionStrategyType.PythonProjectTests,
+            ExecutionStrategyType.PythonProjectUnitTests,
+            ExecutionStrategyType.DotNetCoreProjectTestsExecutionStrategy,
+
+            ExecutionStrategyType.SqlServerSingleDatabasePrepareDatabaseAndRunQueries,
+            ExecutionStrategyType.SqlServerSingleDatabaseRunQueriesAndCheckDatabase,
+            ExecutionStrategyType.SqlServerSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase,
+
+            ExecutionStrategyType.MySqlPrepareDatabaseAndRunQueries,
+            ExecutionStrategyType.MySqlRunQueriesAndCheckDatabase,
+            ExecutionStrategyType.MySqlRunSkeletonRunQueriesAndCheckDatabase,
+        };
+>>>>>>> 965abb7 (Added single database execution strategies)
 
         private readonly HttpService http;
 

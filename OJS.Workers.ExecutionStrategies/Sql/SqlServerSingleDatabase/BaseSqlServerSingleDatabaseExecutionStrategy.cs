@@ -13,13 +13,17 @@
         private const string DateTimeOffsetFormat = "yyyy-MM-dd HH:mm:ss.fffffff zzz";
         private const string TimeSpanFormat = "HH:mm:ss.fffffff";
 
+        private static readonly string _databaseName = Guid.NewGuid().ToString();
         private static readonly Type DateTimeOffsetType = typeof(DateTimeOffset);
         private static string databaseName = Guid.NewGuid().ToString();
 
         private readonly string masterDbConnectionString;
         private string restrictedUserId;
         private readonly string restrictedUserPassword;
+<<<<<<< HEAD:OJS.Workers.ExecutionStrategies/Sql/SqlServerSingleDatabase/BaseSqlServerSingleDatabaseExecutionStrategy.cs
 
+=======
+>>>>>>> 965abb7 (Added single database execution strategies):OJS.Workers.ExecutionStrategies/Sql/SqlServerSingleDatabase/BaseSqlServerLocalDbExecutionStrategy.cs
         private TransactionScope transactionScope;
 
         protected BaseSqlServerSingleDatabaseExecutionStrategy(
@@ -102,7 +106,11 @@
         public override void DropDatabase(string databaseName)
             => this.transactionScope.Dispose();
 
+<<<<<<< HEAD:OJS.Workers.ExecutionStrategies/Sql/SqlServerSingleDatabase/BaseSqlServerSingleDatabaseExecutionStrategy.cs
         public override string GetDatabaseName() => databaseName;
+=======
+        public override string GetDatabaseName() => _databaseName;
+>>>>>>> 965abb7 (Added single database execution strategies):OJS.Workers.ExecutionStrategies/Sql/SqlServerSingleDatabase/BaseSqlServerLocalDbExecutionStrategy.cs
 
         protected override string GetDataRecordFieldValue(IDataRecord dataRecord, int index)
         {
