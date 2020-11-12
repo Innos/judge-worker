@@ -47,6 +47,7 @@
         PythonCodeExecuteAgainstUnitTests = 42,
         PythonProjectTests = 43,
         PythonProjectUnitTests = 44,
+<<<<<<< HEAD
         SqlServerSingleDatabasePrepareDatabaseAndRunQueries = 45,
         SqlServerSingleDatabaseRunQueriesAndCheckDatabase = 46,
         SqlServerSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase = 47,
@@ -61,5 +62,10 @@
         MySqlInMemoryPrepareDatabaseAndRunQueries = 54,
         MySqlInMemoryRunQueriesAndCheckDatabase = 55,
         MySqlInMemoryRunSkeletonRunQueriesAndCheckDatabase = 56,
+=======
+        SqlServerSingleDatabasePrepareDatabaseAndRunQueries = 48,
+        SqlServerSingleDatabaseRunQueriesAndCheckDatabase = 49,
+        SqlServerSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase = 50, 
+>>>>>>> 05958b5 (Fixed ExecutionStrategyType values)
     }
 }
