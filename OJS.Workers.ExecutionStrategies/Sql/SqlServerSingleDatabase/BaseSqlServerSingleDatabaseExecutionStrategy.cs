@@ -22,8 +22,13 @@
         private readonly string restrictedUserPassword;
 <<<<<<< HEAD:OJS.Workers.ExecutionStrategies/Sql/SqlServerSingleDatabase/BaseSqlServerSingleDatabaseExecutionStrategy.cs
 
+<<<<<<< HEAD
 =======
 >>>>>>> 965abb7 (Added single database execution strategies):OJS.Workers.ExecutionStrategies/Sql/SqlServerSingleDatabase/BaseSqlServerLocalDbExecutionStrategy.cs
+=======
+        private static readonly string DatabaseName = $"testing_{Guid.NewGuid()}";
+
+>>>>>>> 79e4c30 (Added new execution strategies)
         private TransactionScope transactionScope;
 
         protected BaseSqlServerSingleDatabaseExecutionStrategy(
@@ -106,11 +111,15 @@
         public override void DropDatabase(string databaseName)
             => this.transactionScope.Dispose();
 
+<<<<<<< HEAD
 <<<<<<< HEAD:OJS.Workers.ExecutionStrategies/Sql/SqlServerSingleDatabase/BaseSqlServerSingleDatabaseExecutionStrategy.cs
         public override string GetDatabaseName() => databaseName;
 =======
         public override string GetDatabaseName() => _databaseName;
 >>>>>>> 965abb7 (Added single database execution strategies):OJS.Workers.ExecutionStrategies/Sql/SqlServerSingleDatabase/BaseSqlServerLocalDbExecutionStrategy.cs
+=======
+        public override string GetDatabaseName() => DatabaseName;
+>>>>>>> 79e4c30 (Added new execution strategies)
 
         protected override string GetDataRecordFieldValue(IDataRecord dataRecord, int index)
         {
