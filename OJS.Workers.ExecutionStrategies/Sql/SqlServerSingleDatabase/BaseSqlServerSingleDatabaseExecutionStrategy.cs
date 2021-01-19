@@ -112,6 +112,7 @@
             => this.transactionScope.Dispose();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< HEAD:OJS.Workers.ExecutionStrategies/Sql/SqlServerSingleDatabase/BaseSqlServerSingleDatabaseExecutionStrategy.cs
         public override string GetDatabaseName() => databaseName;
 =======
@@ -120,6 +121,9 @@
 =======
         public override string GetDatabaseName() => DatabaseName;
 >>>>>>> 79e4c30 (Added new execution strategies)
+=======
+        public override string GetDatabaseName() => DatabaseName;
+>>>>>>> de7e3ef (Merging)
 
         protected override string GetDataRecordFieldValue(IDataRecord dataRecord, int index)
         {
