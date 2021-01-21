@@ -84,9 +84,25 @@ namespace OJS.Workers.Common
                     // Plain text
                     { ExecutionStrategyNames.PlainText, ExecutionStrategyType.CheckOnly },
 
+<<<<<<< HEAD
                     // Php
                     { ExecutionStrategyNames.PhpCode, ExecutionStrategyType.PhpCliExecuteAndCheck },
 
+=======
+                    // Databases
+                    { "sql-server-prepare-db-and-run-queries", ExecutionStrategyType.SqlServerSingleDatabasePrepareDatabaseAndRunQueries },
+                    { "sql-server-run-queries-and-check-database",  ExecutionStrategyType.SqlServerSingleDatabaseRunQueriesAndCheckDatabase},
+                    { "sql-server-run-skeleton-run-queries-and-check-database", ExecutionStrategyType.SqlServerSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase},
+
+                    { "mysql-prepare-db-and-run-queries", ExecutionStrategyType.MySqlPrepareDatabaseAndRunQueries },
+                    { "mysql-run-queries-and-check-database", ExecutionStrategyType.MySqlRunQueriesAndCheckDatabase },
+                    { "mysql-run-skeleton-run-queries-and-check-database", ExecutionStrategyType.MySqlRunSkeletonRunQueriesAndCheckDatabase },
+
+                    // Databases: Old
+                    // { "sql-server-prepare-db-and-run-queries", ExecutionStrategyType.SqlServerLocalDbPrepareDatabaseAndRunQueries },
+                    // { "sql-server-run-queries-and-check-database", ExecutionStrategyType.SqlServerLocalDbRunQueriesAndCheckDatabase },
+                    // { "sql-server-run-skeleton-run-queries-and-check-database", ExecutionStrategyType.SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabase },
+>>>>>>> 5f4172a (Fixing strategies)
                     // .Net Core
                     // { ExecutionStrategyNames.CSharpDotNetCoreProjectTests, ExecutionStrategyType.DotNetCoreProjectTestsExecutionStrategy },
                     // .Net
