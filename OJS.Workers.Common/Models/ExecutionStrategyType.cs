@@ -51,6 +51,7 @@
         SqlServerSingleDatabasePrepareDatabaseAndRunQueries = 45,
         SqlServerSingleDatabaseRunQueriesAndCheckDatabase = 46,
         SqlServerSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase = 47,
+<<<<<<< HEAD
         MariaDbSingleDatabasePrepareDatabaseAndRunQueries = 48,
         MariaDbSingleDatabaseRunQueriesAndCheckDatabase = 49,
         MariaDbSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase = 50,
@@ -67,5 +68,7 @@
         SqlServerSingleDatabaseRunQueriesAndCheckDatabase = 49,
         SqlServerSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase = 50, 
 >>>>>>> 05958b5 (Fixed ExecutionStrategyType values)
+=======
+>>>>>>> 04a62ae (Cleanup)
     }
 }
