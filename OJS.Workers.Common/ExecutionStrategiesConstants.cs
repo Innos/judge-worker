@@ -94,48 +94,18 @@ namespace OJS.Workers.Common
                     // Plain text
                     { ExecutionStrategyNames.PlainText, ExecutionStrategyType.CheckOnly },
 
-<<<<<<< HEAD
-<<<<<<< HEAD
                     // Php
                     { ExecutionStrategyNames.PhpCode, ExecutionStrategyType.PhpCliExecuteAndCheck },
 
-=======
-                    // Databases
-                    { ExecutionStrategyNames.SqlServerSingleDatabasePrepareDbAndRunQueries, ExecutionStrategyType.SqlServerSingleDatabasePrepareDatabaseAndRunQueries },
-                    { ExecutionStrategyNames.SqlServerSingleDatabaseRunQueriesAndCheckDatabase, ExecutionStrategyType.SqlServerSingleDatabaseRunQueriesAndCheckDatabase},
-                    { ExecutionStrategyNames.SqlServerSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase, ExecutionStrategyType.SqlServerSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase},
-=======
                     // Sql Server
                     { ExecutionStrategyNames.SqlServerPrepareDatabaseAndRunQueries, ExecutionStrategyType.SqlServerSingleDatabasePrepareDatabaseAndRunQueries },
                     { ExecutionStrategyNames.SqlServerRunQueriesAndCheckDatabase,  ExecutionStrategyType.SqlServerSingleDatabaseRunQueriesAndCheckDatabase},
                     { ExecutionStrategyNames.SqlServerRunSkeletonRunQueriesAndCheckDatabase, ExecutionStrategyType.SqlServerSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase},
 
                     // MySQL/MariaDb
->>>>>>> e5aae9c (Extracted strategy names into constants)
                     { ExecutionStrategyNames.MySqlPrepareDbAndRunQueries, ExecutionStrategyType.MySqlPrepareDatabaseAndRunQueries },
                     { ExecutionStrategyNames.MySqlRunQueriesAndCheckDatabase, ExecutionStrategyType.MySqlRunQueriesAndCheckDatabase },
                     { ExecutionStrategyNames.MySqlRunSkeletonRunQueriesAndCheckDatabase, ExecutionStrategyType.MySqlRunSkeletonRunQueriesAndCheckDatabase },
-
-                    // Php
-                    { ExecutionStrategyNames.PhpCode, ExecutionStrategyType.PhpCliExecuteAndCheck },
-
-                    // Databases: Old
-                    // { "sql-server-prepare-db-and-run-queries", ExecutionStrategyType.SqlServerLocalDbPrepareDatabaseAndRunQueries },
-                    // { "sql-server-run-queries-and-check-database", ExecutionStrategyType.SqlServerLocalDbRunQueriesAndCheckDatabase },
-                    // { "sql-server-run-skeleton-run-queries-and-check-database", ExecutionStrategyType.SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabase },
->>>>>>> 5f4172a (Fixing strategies)
-                    // .Net Core
-                    // { ExecutionStrategyNames.CSharpDotNetCoreProjectTests, ExecutionStrategyType.DotNetCoreProjectTestsExecutionStrategy },
-                    // .Net
-                    // { ExecutionStrategyNames.CsharpCode, ExecutionStrategyType.CompileExecuteAndCheck },
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-                    
->>>>>>> 44d8948 (Cleaning up strategies)
-=======
-
->>>>>>> e5aae9c (Extracted strategy names into constants)
                 };
 
             public static readonly IDictionary<ExecutionStrategyType, string> ExecutionStrategyToNameMappings =

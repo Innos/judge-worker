@@ -373,7 +373,19 @@
                         Settings.SqlServerLocalDbRestrictedUserPassword);
                     break;
                 case ExecutionStrategyType.SqlServerSingleDatabasePrepareDatabaseAndRunQueries:
-                    executionStrategy = new SqlServerSingleDatabasePrepareDatabaseAndRunQueriesExecutionStrategy(
+                    executionStrategy = new SqlServerLocalDbPrepareDatabaseAndRunQueriesExecutionStrategy(
+                        Settings.SqlServerLocalDbMasterDbConnectionString,
+                        Settings.SqlServerLocalDbRestrictedUserId,
+                        Settings.SqlServerLocalDbRestrictedUserPassword);
+                    break;
+                case ExecutionStrategyType.SqlServerSingleDatabaseRunQueriesAndCheckDatabase:
+                    executionStrategy = new SqlServerLocalDbRunQueriesAndCheckDatabaseExecutionStrategy(
+                        Settings.SqlServerLocalDbMasterDbConnectionString,
+                        Settings.SqlServerLocalDbRestrictedUserId,
+                        Settings.SqlServerLocalDbRestrictedUserPassword);
+                    break;
+                case ExecutionStrategyType.SqlServerSingleDatabaseRunSkeletonRunQueriesAndCheckDatabase:
+                    executionStrategy = new SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy(
                         Settings.SqlServerLocalDbMasterDbConnectionString,
                         Settings.SqlServerLocalDbRestrictedUserId,
                         Settings.SqlServerLocalDbRestrictedUserPassword);
