@@ -117,7 +117,9 @@
         protected virtual string FixCommandText(string commandText)
             => commandText;
 
-        protected SqlResult ExecuteReader(IDbConnection connection, string commandText,
+        protected SqlResult ExecuteReader(
+            IDbConnection connection,
+            string commandText,
             int timeLimit = DefaultTimeLimit)
         {
             using (var command = connection.CreateCommand())
@@ -172,7 +174,13 @@
                 {
                     Id = test.Id,
                     ResultType =
+<<<<<<< HEAD
                         checkerResult.IsCorrect ? TestRunResultType.CorrectAnswer : TestRunResultType.WrongAnswer,
+=======
+                        checkerResult.IsCorrect
+                            ? TestRunResultType.CorrectAnswer
+                            : TestRunResultType.WrongAnswer,
+>>>>>>> simple-execution-adapter
                     CheckerDetails = checkerResult.CheckerDetails
                 });
             }
@@ -180,7 +188,13 @@
             {
                 result.Results.Add(new TestResult
                 {
+<<<<<<< HEAD
                     Id = test.Id, TimeUsed = executionContext.TimeLimit, ResultType = TestRunResultType.TimeLimit
+=======
+                    Id = test.Id,
+                    TimeUsed = executionContext.TimeLimit,
+                    ResultType = TestRunResultType.TimeLimit,
+>>>>>>> simple-execution-adapter
                 });
             }
         }

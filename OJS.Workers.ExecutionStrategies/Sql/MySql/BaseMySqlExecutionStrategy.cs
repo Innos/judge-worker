@@ -51,7 +51,11 @@
                 var createUserQuery = $@"
                     CREATE USER IF NOT EXISTS '{this.restrictedUserId}'@'%';
                     ALTER USER '{this.restrictedUserId}' IDENTIFIED BY '{this.restrictedUserPassword}'";
+<<<<<<< HEAD
                     // SET PASSWORD FOR '{this.restrictedUserId}'@'%'=PASSWORD('{this.restrictedUserPassword}')";
+=======
+                    /* SET PASSWORD FOR '{this.restrictedUserId}'@'%'=PASSWORD('{this.restrictedUserPassword}')"; */
+>>>>>>> simple-execution-adapter
 
                 var grandPrivilegesToUserQuery = $@"
                     GRANT ALL PRIVILEGES ON `{databaseName}`.* TO '{this.restrictedUserId}'@'%';
@@ -64,6 +68,7 @@
                 this.ExecuteNonQuery(connection, grandPrivilegesToUserQuery);
             }
 
+<<<<<<< HEAD
             var userIdRegex = new Regex("UID=.*?;");
             var passwordRegex = new Regex("Password=.*?;");
 
@@ -79,8 +84,12 @@
 
             var createdDbConnection = new MySqlConnection(createdDbConnectionString);
             createdDbConnection.Open();
+=======
+            var workerConnection = new MySqlConnection(this.BuildWorkerDbConnectionString(databaseName));
+            workerConnection.Open();
+>>>>>>> simple-execution-adapter
 
-            return createdDbConnection;
+            return workerConnection;
         }
 
         public override void DropDatabase(string databaseName)
@@ -113,6 +122,24 @@
             }
 
             return base.GetDataRecordFieldValue(dataRecord, index);
+        }
+
+        private string BuildWorkerDbConnectionString(string databaseName)
+        {
+            var userIdRegex = new Regex("UID=.*?;");
+            var passwordRegex = new Regex("Password=.*?;");
+
+            var workerDbConnectionString = this.sysDbConnectionString;
+
+            workerDbConnectionString =
+                userIdRegex.Replace(workerDbConnectionString, $"UID={this.restrictedUserId};");
+
+            workerDbConnectionString =
+                passwordRegex.Replace(workerDbConnectionString, $"Password={this.restrictedUserPassword}");
+
+            workerDbConnectionString += $";Database={databaseName};Pooling=False;";
+
+            return workerDbConnectionString;
         }
     }
 }
